@@ -79,7 +79,7 @@ class Game:
 			if picked_enemy in self.enemy_types:
 				print(f"Вы выбрали противника: {picked_enemy}")
 				#присваивание через декоратор
-				self.enemy = set_name(self.enemy_types[picked_enemy])
+				self.enemy = set_name(self.enemy_types[picked_enemy], **{"level": 2})
 				break
 
 	def choose_action(self):
@@ -89,6 +89,7 @@ class Game:
 				print(act)
 			choosen_act = input()
 			if choosen_act in self.actions:
+				print("\n")
 				damage = self.actions[choosen_act]()
 				if self.enemy._take_damage(damage):
 					print("Вы победили!!! перезапустите игру чтобы начать заново")
@@ -96,12 +97,7 @@ class Game:
 				damage_char, pierce = self.enemy.attack()
 				if self.char._take_damage(damage_char, pierce):
 					print("Вы умерли, перезапустите игру чтобы начать заново")
-					break
-				
-
-
-				
-
+					break				
 
 	def start_game(self):
 		self.pick_class()

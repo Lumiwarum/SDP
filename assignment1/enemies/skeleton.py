@@ -9,9 +9,9 @@ class Skeleton(MonsterBase):
         self.health = 70
 
     def attack(self):
-        if self.rage >1:
+        if self.rage >2:
             self.rage = 0
-            pierce = lambda x: int(x * 0.7)
+            pierce = lambda x: int(x * 0.9)
             return self._back_charge(), pierce
         damage = self.agility
         self.rage +=1
@@ -22,4 +22,9 @@ class Skeleton(MonsterBase):
         return self.agility+random.randint(1, self.agility//2)
 
     def _defence(self):
-        return 90 if self.high_ground else self.agility
+        if self.high_ground:
+            defence = 20
+            self.high_ground = False
+        else:
+            defence = self.agility 
+        return defence
