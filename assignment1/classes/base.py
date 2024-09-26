@@ -17,11 +17,13 @@ class CharacterBase(ABC):
         pass
 
     @abstractmethod
-    def _defence(self):
-        return 0
+    def _defence(self, piercing):
+        return piercing(0)
 
-    def take_damage(self, damage):
-        self.health -= np.max([(damage-self._defence()),0])
+    def _take_damage(self, damage, piercing):
+        taken_dmg = np.max([(damage-self._defence(piercing)),0])
+        self.health -= taken_dmg
+        print(f"{self.name} получил {taken_dmg} урона\nОсталось {self.health} здоровья")
         if self.health <= 0:
             print(f"{self.name} умер!")
             return True

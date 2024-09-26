@@ -58,8 +58,17 @@ class Game:
 			picked_cls = input()
 			if picked_cls in self.class_types:
 				print(f"Вы выбрали класс: {picked_cls}")
+				#присваивание через декоратор
 				self.char = set_name(self.class_types[picked_cls])
 				break
+		# get the action dict
+		actions = {}
+		for ac_name, action  in inspect.getmembers(self.char, predicate=inspect.ismethod):
+			if ac_name.startswith("_"):
+				continue
+			actions[ac_name] = action
+		self.actions = actions
+
 
 	def pick_enemy(self):
 		print("Выберите вид вашего противника")
@@ -69,13 +78,35 @@ class Game:
 			picked_enemy = input()
 			if picked_enemy in self.enemy_types:
 				print(f"Вы выбрали противника: {picked_enemy}")
+				#присваивание через декоратор
 				self.enemy = set_name(self.enemy_types[picked_enemy])
 				break
+
+	def choose_action(self):
+		print("Выберите вид действия")
+		while True:
+			for act in self.actions:
+				print(act)
+			choosen_act = input()
+			if choosen_act in self.actions:
+				damage = self.actions[choosen_act]()
+				if self.enemy._take_damage(damage):
+					print("Вы победили!!! перезапустите игру чтобы начать заново")
+					break
+				damage_char, pierce = self.enemy.attack()
+				if self.char._take_damage(damage_char, pierce):
+					print("Вы умерли, перезапустите игру чтобы начать заново")
+					break
+				
+
+
+				
 
 
 	def start_game(self):
 		self.pick_class()
 		self.pick_enemy()
+		self.choose_action()
 
 
 

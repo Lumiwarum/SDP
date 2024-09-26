@@ -11,10 +11,11 @@ class Skeleton(MonsterBase):
     def attack(self):
         if self.rage >1:
             self.rage = 0
-            return self._back_charge()
+            pierce = lambda x: int(x * 0.7)
+            return self._back_charge(), pierce
         damage = self.agility
         self.rage +=1
-        return damage
+        return damage, lambda x: x
     
     def _back_charge(self):
         self.high_ground = True
